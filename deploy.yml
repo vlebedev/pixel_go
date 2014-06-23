@@ -1,0 +1,38 @@
+---
+- hosts: all
+  remote_user: wal
+  vars:
+    program: "pixel_{{ node_name | mandatory }}"
+    config_file: "/home/wal/pixel_go/config/{{ program }}.xml"
+    app_dir: "/home/wal/pixel_go"
+    log_dir: "/home/wal/pixel_go/logs_{{ node_name | mandatory }}"
+
+  tasks:
+    - name: ensure supervisor package is present
+      sudo: yes
+      apt: name=supervisor state=present
+
+    - name: ensure log directory exists
+      file: dest={{ log_dir }} state=directory
+
+    - name: ensure bin directory exists
+      file: dest={{ app_dir }}/bin state=directory
+
+    - name: ensure config directory exists
+      file: dest={{ app_dir }}/config state=directory
+
+    - name: stop program
+      sudo: yes
+      ignore_errors: yes
+      supervisorctl: name={{ program }} state=stopped
+
+    - name: copy pixel executable to destination server
+      copy: src=bin/pixel dest={{ app_dir }}/bin/pixel mode=755
+
+    - name: copy config file to destination server
+      copy: src=config/{{ program }}.xml dest={{ config_file }}
+
+    - name: launch application
+      sudo: yes
+      supervisorctl: name={{ program }} state=started
+

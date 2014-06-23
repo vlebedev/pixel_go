@@ -1,0 +1,37 @@
+<config>
+  <pixel>
+    <base64>iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAAA1BMVEUAAACnej3aAAAAAXRSTlMAQObYZgAAAApJREFUCNdjYAAAAAIAAeIhvDMAAAAASUVORK5CYII=</base64>
+    <cookie>sberlabspx</cookie>
+    <chanbufsize>1024</chanbufsize>
+    <nodename>pixel_a</nodename>
+    <port>8080</port>
+    <path>/img/p.png</path>
+    <statsd>localhost:8125</statsd>
+  </pixel>
+  <logging>
+    <filter enabled="true">
+      <tag>stdout</tag>
+      <type>console</type>
+      <!-- level is (:?FINEST|FINE|DEBUG|TRACE|INFO|WARNING|ERROR) -->
+      <level>DEBUG</level>
+    </filter>
+    <filter enabled="true">
+      <tag>file</tag>
+      <type>file</type>
+      <level>FINEST</level>
+      <property name="filename">/home/wal/pixel_go/logs_a/track.log</property>
+      <property name="format">%M</property>
+      <property name="rotate">true</property>
+      <property name="maxsize">10M</property>
+      <property name="maxlines">0K</property>
+      <property name="daily">false</property> 
+    </filter>
+    <filter enabled="true">
+      <tag>network</tag>
+      <type>socket</type>
+      <level>FINEST</level>
+      <property name="endpoint">127.0.0.1:6363</property>
+      <property name="protocol">udp</property>
+    </filter>
+  </logging>
+</config>
